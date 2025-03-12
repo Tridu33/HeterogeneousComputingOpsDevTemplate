@@ -37,15 +37,15 @@ set(CMAKE_LINK_DEF_FILE_FLAG "${CMAKE_LINK_DEF_FILE_FLAG} -L/usr/local/cuda-12/l
 # # link c++ lib
 # target_link_libraries(main cudaMatMul)
 
-# 遍历./ops_impl目录下全部函数实现的源文件，保存为变量, 相当于./ops_impl/run_array_mul_scalar.cu ./ops_impl/run_kernel4elementwise_add_float4.cu
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/cuda MY_CUDA_OPS_IMPLEMENT_LIST)
+# 遍历目录下全部函数实现的源文件
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/cpp MY_CPP_OPS_INCLUDE_LIST)
 
-# cuda lib build
-add_library(cuda_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cuda/add.cu ${CMAKE_CURRENT_SOURCE_DIR}/cuda/run_array_mul_scalar.cu)
-
 # c++ lib build
-add_library(cpp_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cpp/add.cpp)
+add_library(cpp_ops STATIC ${MY_CPP_OPS_INCLUDE_LIST})
+
+# cuda lib build
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/cuda MY_CUDA_OPS_IMPLEMENT_LIST)
+add_library(cuda_ops STATIC ${MY_CUDA_OPS_IMPLEMENT_LIST}) #等价写法: add_library(cuda_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cuda/add.cu ${CMAKE_CURRENT_SOURCE_DIR}/cuda/run_array_mul_scalar.cu)
 
 # set cuda properties
 set_target_properties(cuda_ops PROPERTIES
