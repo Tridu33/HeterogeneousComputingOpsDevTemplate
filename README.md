@@ -1,22 +1,19 @@
-# 针对Pybind11绑定的c++算子开发模板
+# Operator development template for Pybind11 binding
 
-本项目分别用最基础的TensorAdd作为示例介绍“Python未皮，C++为翼”的算子开发调用流程，更多算子先考虑现有再重写：
+This project uses the most basic TensorAdd as an example to introduce the operator development call process of "Python is not skinned, C++ is winged". More operators are considered first and then rewrite:
 
-- CPU，[更多CPU量化算子参考llamafile](https://github.com/Mozilla-Ocho/llamafile/tree/main/llama.cpp)，需了解x86的AVX指令集和arm64的NEON指令集用法等知识；
-- CUDA.cu for GPU，[更多GPU推理算子参考CUDA官方samples](https://github.com/NVIDIA/cuda-samples/tree/master/Samples)、[樊哲勇老师的书籍《CUDA-Programming编程》](https://github.com/brucefan1983/CUDA-Programming)和[CUDA_kernel_Samples](https://github.com/Tongkaio/CUDA_Kernel_Samples)类似案例集，需了解CUDA和pyCUDA并行开发；
-- Ascend NPU，[更多NPU推理算子参考官方案例](https://github.com/Ascend/samples/tree/master/cplusplus/level1_single_api/4_op_dev/1_custom_op)和[B站起飞的老谭](https://space.bilibili.com/668461244?spm_id_from=333.337.0.0)等资料，需了解TBE,pyACL,OMl量化推理算子库等Ascend系前置知识，按需寻找或者自行重写。
-- Python算子：原生python写的算子不需要pybind，[Triton官方tutorials](https://github.com/triton-lang/triton/blob/main/python/tutorials/01-vector-add.py)和[Awesome-Triton-Kernels](https://github.com/zinccat/Awesome-Triton-Kernels)。
+- CPU,[More CPU quantization operator reference llamafile](https://github.com/Mozilla-Ocho/llamafile/tree/main/llama.cpp), you need to know the usage of the AVX instruction set of x86 and the usage of the NEON instruction set of arm64;
+- CUDA.cu for GPU,[More GPU inference operator reference CUDA official samples](https://github.com/NVIDIA/cuda-samples/tree/master/Samples),[Teacher Fan Zheyong's book "CUDA-Programming Programming"](https://github.com/brucefan1983/CUDA-Programming) and [CUDA_kernel_Samples](https://github.com/Tongkaio/CUDA_Kernel_Samples) similar case sets, you need to understand parallel development of CUDA and pyCUDA;-
+ - Ascend NPU,[More examples of NPU inference operator reference official solutions](https://github.com/Ascend/samples/tree/master/cplusplus/level1_single_api/4_op_dev/1_custom_op) and [Old Tan taking off at Station B](https://space.bilibili.com/668461244?spm_id_from=333.337.0.0) for information such as TBE, pyACL, OMl quantitative inference operator library, etc., you need to know the pre-knowledge of Ascend systems, and find it on demand or rewritten it yourself.
+- Python算子:原生python写的算子不需要pybind,[Triton official tutorials](https://github.com/triton-lang/triton/blob/main/python/tutorials/01-vector-add.py) and [Awesome-Triton-Kernels](https://github.com/zinccat/Awesome-Triton-Kernels).
 
-JAX是autograd+XLA在纯函数微分编程的AI框架试验田，类比PyTorch,MindSpore,Tensorflow等存在，FP编程哲学在于可组合性足够灵活，比如[cuda+cpp写算子pybind11封装一个算子给调用](https://jax.ac.cn/en/latest/Custom_Operation_for_GPUs.html)。
+JAX is an experimental field of AI frameworks for autograd+XLA in pure function differential programming. It exists analogously with PyTorch, MindSpore, Tensorflow, etc. The FP programming philosophy lies in the flexibility of composability, such as [cuda+cpp write operator pybind11 encapsulates an operator to call](https://jax.ac.cn/en/latest/Custom_Operation_for_GPUs.html).
 
-实际上Python AI框架和底层算子是解耦的:
+In fact, the Python AI framework and the underlying operator are decoupled:
 
-1. CopyIn任务: 输入H2D指针乱飞传递给底层异构算子;
-2. Compute任务: 自动(llama.cpp等推理引擎主流做法是后端优先级根据可用性自动选择后端)或者手动(ktransformers使用yaml手工指定MoE具体结构到异构设备)指派dispatch计算图中任务到异构计算结构具体算子.so中执行;
-3. CopyOut:任务 最后把计算结果通过D2H返回Python调用方即可;
+1. CopyIn task: input H2D pointer is passed to the underlying heterogeneous operator;
+2. Compute tasks: Automatic (the mainstream practice of inference engines such as llama.cpp is to automatically select the backend based on availability) or manually (ktransformers use yaml to manually specify the specific structure of MoE to heterogeneous devices) to assign tasks in the dispatch calculation diagram to the specific operator of heterogeneous computing structure.so;
+3. CopyOut: Task. Finally, return the calculation result to the Python caller through D2H;
 
-本项目首先介绍pybind11调用cpp并调试，
+This project first introduces how pybind11 calls cpp and debug it; then introduces how cuda and cpp operators are bound and used on GPU machines; then introduces the introduction to the development of AscendNPU operators. for example [MindSpore first registers an operator interface, and can use similar methods to dispatch to CPU, GPU, and NPU multi-terminal implementation.](https://github.com/openmlsys/openmlsys-zh/blob/main/chapter_programming_interface/c_python_interaction.md).
 
-然后介绍AscendNPU算子开发入门，
-
-最后模拟MindSpore算子定义模式先注册AddV2接口，然后接入CPU,GPU,NPU多端实现方式。
