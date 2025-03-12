@@ -1,7 +1,7 @@
 #!python
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../build'))  # sys.path.append(os.path.join(os.path.dirname(__file__), '../package_3'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../build'))  
 import my_mindspore_ops
 
 a = 1
