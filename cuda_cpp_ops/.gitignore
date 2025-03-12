@@ -4,5 +4,4 @@ out
 .venv
 
 # file
-call_calc.c
-call_calc.cpython-38-x86_64-linux-gnu.so
+manual_main4test_elementwise_add_float4

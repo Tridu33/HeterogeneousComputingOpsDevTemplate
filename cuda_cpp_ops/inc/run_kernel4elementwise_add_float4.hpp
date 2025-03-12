@@ -1,0 +1,1 @@
+void run_kernel4elementwise_add_float4(float *a, float *b, float *c, int N);

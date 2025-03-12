@@ -1,21 +1,32 @@
 # 指定CMake编译最低要求版本
 cmake_minimum_required(VERSION 2.8...3.5)
 
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
 # include .h
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../inc)
 include_directories(${pybind11_INCLUDE_DIR})
 include_directories(${CUDA_INCLUDE_DIR})
+include_directories(${PYTHON_INCLUDE_DIRS})
+include_directories(${Python3_INCLUDE_DIRS})
+
+find_package(CUDA) # 用find_package来导入CUDA包，然后就可以使用cuda_add_executable()或者cuda_add_library()来编译CUDA可执行文件或者库文件
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
+set(CMAKE_LINK_DEF_FILE_FLAG "${CMAKE_LINK_DEF_FILE_FLAG} -L/usr/local/cuda-12/lib64") # 指定libcudaart.so之类的cuda动态链接库
 
 # # pybind11 lib build
-# pybind11_add_module(gpu_library ${CMAKE_CURRENT_SOURCE_DIR}/gpu_library.cu) 
+# pybind11_add_module(gpu_library ${CMAKE_CURRENT_SOURCE_DIR}/gpu_library.cu)
 
 # # specify install directories
 # install(TARGETS gpu_library LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
-#===========================================================================
+# ===========================================================================
 
 # if(CUDA_ENABLE)
-#     enable_language(CUDA)
+# enable_language(CUDA)
 # endif()
 # # cuda lib build
 # add_library(cudaMatMul cudaMatMul.cu cudaMatMul.h)
@@ -26,8 +37,12 @@ include_directories(${CUDA_INCLUDE_DIR})
 # # link c++ lib
 # target_link_libraries(main cudaMatMul)
 
+# 遍历./ops_impl目录下全部函数实现的源文件，保存为变量, 相当于./ops_impl/run_array_mul_scalar.cu ./ops_impl/run_kernel4elementwise_add_float4.cu
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/cuda MY_CUDA_OPS_IMPLEMENT_LIST)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/cpp MY_CPP_OPS_INCLUDE_LIST)
+
 # cuda lib build
-add_library(cuda_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cuda/add.cu)
+add_library(cuda_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cuda/add.cu ${CMAKE_CURRENT_SOURCE_DIR}/cuda/run_array_mul_scalar.cu)
 
 # c++ lib build
 add_library(cpp_ops STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cpp/add.cpp)
