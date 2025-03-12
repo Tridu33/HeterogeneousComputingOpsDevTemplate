@@ -1,0 +1,8 @@
+#! /usr/bin/env sh
+set -e
+
+# cuda
+sudo apt install nvidia-cuda-toolkit
+
+# check install directory
+# dpkg-query -L nvidia-cuda-toolkit
