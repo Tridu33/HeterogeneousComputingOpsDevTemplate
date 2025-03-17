@@ -3,7 +3,7 @@ project(my_mindspore_ops)
 
 # ------- DEBUG添加这两行 -------
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}  -g")
 
 # 1. libmy_mindspore_ops_impl.a ，SHARED动态库/STATIC静态库 源文件们
 add_library(my_mindspore_ops_impl STATIC src/my_mindspore_ops_impl.cpp)
