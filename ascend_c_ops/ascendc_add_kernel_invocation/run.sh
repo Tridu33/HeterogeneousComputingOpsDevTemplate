@@ -1,0 +1,1 @@
+../kernel_template/run.sh
