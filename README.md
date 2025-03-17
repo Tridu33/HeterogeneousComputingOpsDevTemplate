@@ -1,6 +1,6 @@
 # Operator development template for Pybind11 binding
 
-This project uses the most basic TensorAdd as an example to introduce the operator development call process of "Python is not skinned, C++ is winged". More operators are considered first and then rewrite:
+[This project](https://github.com/Tridu33/OperatorsDevTemplate/tree/main) uses the most basic TensorAdd as an example to introduce the operator development call process of "Python is not skinned, C++ is winged". More operators are considered first and then rewrite:
 
 - CPU,[More CPU quantization operator reference llamafile](https://github.com/Mozilla-Ocho/llamafile/tree/main/llama.cpp), you need to know the usage of the AVX instruction set of x86 and the usage of the NEON instruction set of arm64;
 - CUDA.cu for GPU,[More GPU inference operator reference CUDA official samples](https://github.com/NVIDIA/cuda-samples/tree/master/Samples),[Teacher Fan Zheyong's book "CUDA-Programming Programming"](https://github.com/brucefan1983/CUDA-Programming) and [CUDA_kernel_Samples](https://github.com/Tongkaio/CUDA_Kernel_Samples) similar case sets, you need to understand parallel development of CUDA and pyCUDA;-
@@ -16,4 +16,3 @@ In fact, the Python AI framework and the underlying operator are decoupled:
 3. CopyOut: Task. Finally, return the calculation result to the Python caller through D2H;
 
 This project first introduces how pybind11 calls cpp and debug it; then introduces how cuda and cpp operators are bound and used on GPU machines; then introduces the introduction to the development of AscendNPU operators. for example [MindSpore first registers an operator interface, and can use similar methods to dispatch to CPU, GPU, and NPU multi-terminal implementation.](https://github.com/openmlsys/openmlsys-zh/blob/main/chapter_programming_interface/c_python_interaction.md).
-

@@ -48,6 +48,6 @@ void run_kernel4elementwise_add_float4(float* a_h,
   int block_size = 1024;
   int grid_size = CEIL(CEIL(N, 4), 1024);
   kernel4elementwise_add_float4<<<grid_size, block_size>>>(a_d, b_d, c_d, N);
-  // 返回值保存在c_h
+  // D2H 返回值保存在c_h
   cudaCheck(cudaMemcpy(c_h, c_d, N * sizeof(float), cudaMemcpyDeviceToHost));
 }
