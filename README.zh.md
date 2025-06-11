@@ -7,7 +7,7 @@
 | 架构 | 汇编 | 编译器     | 调试调优工具                | 中间表示语言          |
 |------|---------|--------------|----------------------|----------------------|
 | CPU  | asm     | gcc          |       IDE               | LLVM                 |
-| GPU  | ptx     | nvcc         | cuda-gdb & Insight   | MLIR dialect for GPU |
+| GPU  | ptx     | nvcc         | cuda-gdb & Insight   | [MLIR dialect for GPU](https://mlir.llvm.org/docs/Dialects/GPU/) |
 | NPU  | bin     | ccec bisheng | msdebug & MindStudio | Ascend NPU IR        |
 
 

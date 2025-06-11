@@ -1,6 +1,6 @@
-chinese|[English](README.md) 
+[chinese](./README.zh.md)|English 
 
-# Operator development template for heterogeneous computing systems
+# Operator development template for Heterogeneous Computing Systems
 
 > Warning: This page is translated by MACHINE, which may lead to POOR QUALITY or INCORRECT INFORMATION, please read with CAUTION!
 
@@ -10,7 +10,7 @@ The development path of parallel acceleration of high-performance computing is s
 |Architecture|Compilation|Compiler|Debugging and debugging tools|Intermediate representation language|
 |------|---------|--------------|----------------------|----------------------|
 |CPU|asm|gcc|IDE|LLVM|
-|GPU|ptx|nvcc|cuda-gdb & Insight|MLIR dialect for GPU|
+|GPU|ptx|nvcc|cuda-gdb & Insight|[MLIR dialect for GPU](https://mlir.llvm.org/docs/Dialects/GPU/)|
 |NPU|bin|ccec bisheng|msdebug & MindStudio|Ascend NPU IR|
 
 
