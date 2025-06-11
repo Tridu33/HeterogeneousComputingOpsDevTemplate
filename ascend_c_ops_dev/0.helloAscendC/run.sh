@@ -49,7 +49,7 @@ cmake --build build -j
 cmake --install build
 
 check_msg="Hello World"
-file_path=$CURRENT_DIR/build_out/output_msg.txt
+file_path=output_msg.txt
 ./build/main | tee $file_path
 count=$(grep -c "$check_msg" $file_path)
 
