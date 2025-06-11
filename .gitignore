@@ -1,6 +1,15 @@
 ##########################   mine   ################################################
 bak/
 third_party/
+offload/
+build/
+build_out/
+kernel_meta/
+myinstallpath/
+cceprint/
+npuchk/
+fusion_result.json
+
 
 ########################## Python ################################################
 # Byte-compiled / optimized / DLL files
