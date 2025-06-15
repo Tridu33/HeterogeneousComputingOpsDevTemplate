@@ -2,14 +2,17 @@
 bak/
 third_party/
 offload/
+kernel_meta/
+fusion_result.json
 build/
 build_out/
-kernel_meta/
+out/
 myinstallpath/
 cceprint/
 npuchk/
+simlog/
 fusion_result.json
-
+stub_reg.log
 
 ########################## Python ################################################
 # Byte-compiled / optimized / DLL files
