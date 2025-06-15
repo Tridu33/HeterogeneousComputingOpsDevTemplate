@@ -2,6 +2,8 @@
 
 > TBE框架给用户提供自定义算子，包括TBE DSL、TBE TIK、AICPU三种开发方式，TIK用Python写算子，TIK2用c++写算子。TBE是上一代的算子开发语言了，华为TBE和AKG都基于TVM但是对动态规模的支持不是很好。目前TBE不怎么演进了，都逐步走向**AscendC**(旧名TIK C++/TIK2)。
 
+写算子前最好理解一下[Ascend NPU的硬件架构](https://blog.csdn.net/m0_74823595/article/details/144329778)，这样能更好的理解Ascend C接口文档的涵义。
+
 ## 环境准备
 
 **Toolkit** 开发套件 本质上包含了离线推理引擎(NNRT)和实用工具(Toolbox),所以不管是运行环境还是开发环境，只要安装了Toolkit就行。
@@ -43,8 +45,8 @@ Ascend CL（TIK2 C++）算子可用CPU模式或NPU模式执行
 
 ## Ascend C demos
 
-一般不需要从零开始开发，checkout到对应branch的samples官方样例即可。
-下面以香橙派中安装CANN`8.0.RC3.alpha002 `为例
+一般不需要从零开始开发，checkout到对应branch的samples官方样例即可。下面以香橙派中安装CANN`8.0.RC3.alpha002 `为例
+
 ```bash
 # ls /usr/local/Ascend/ascend-toolkit/
 8.0  8.0.0  8.0.RC3.alpha002  latest  set_env.sh
