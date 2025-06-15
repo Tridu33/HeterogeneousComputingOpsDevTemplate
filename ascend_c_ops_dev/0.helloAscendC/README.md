@@ -1,3 +1,10 @@
+示例如下。
+```bash
+bash run.sh -v Ascend310B4
+```
+
+---
+
 ## HelloWorld自定义算子样例说明
 <!--注：该样例仅用于说明目的，不用作生产质量代码的示例-->
 本样例通过使用<<<>>>内核调用符完成算子核函数NPU侧运行验证的基础流程和PRINTF宏打印。
@@ -70,12 +77,6 @@
       - Atlas 推理系列产品（Ascend 310P处理器）参数值：Ascend310P1、Ascend310P3
       - Atlas A2训练系列产品/Atlas 800I A2推理产品参数值：AscendxxxB1、AscendxxxB2、AscendxxxB3、AscendxxxB4
       - Atlas 200/500 A2推理产品参数值：AscendxxxB1、AscendxxxB2、AscendxxxB3、AscendxxxB4
-
-    示例如下。
-    ```bash
-    bash run.sh -v Ascend310B4
-    bash run.sh -v Ascend310B4
-    ```
 
 ## 更新说明
 | 时间       | 更新事项                                     |

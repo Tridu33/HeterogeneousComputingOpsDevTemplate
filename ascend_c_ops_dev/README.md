@@ -1,4 +1,4 @@
-小白扫盲推荐阅读[昇腾Ascend TIK自定义算子开发教程（概念版）](https://blog.csdn.net/m0_37605642/article/details/132780001)
+小白概念扫盲推荐阅读[昇腾Ascend TIK自定义算子开发教程（概念版）](https://blog.csdn.net/m0_37605642/article/details/132780001)
 
 > TBE框架给用户提供自定义算子，包括TBE DSL、TBE TIK、AICPU三种开发方式，TIK用Python写算子，TIK2用c++写算子。TBE是上一代的算子开发语言了，华为TBE和AKG都基于TVM但是对动态规模的支持不是很好。目前TBE不怎么演进了，都逐步走向**AscendC**(旧名TIK C++/TIK2)。
 
@@ -39,31 +39,31 @@ Ascend CL（TIK2 C++）算子可用CPU模式或NPU模式执行
 #define_aicore [aicore]
 ```
 
-（可选）通过环境变量ASCEND_CACHE_PATH、ASCEND_WORK_PATH设置AscendCL应用编译运行过程中产生的文件的落盘路径，涉及ATC模型转换、AscendCL应用编译配置、AOE模型智能调优、性能数据采集、日志采集等功能，落盘文件包括算子编译缓存文件、知识库文件、调优结果文件、性能数据文件、日志文件等。
-
-```bash
-export ASCEND_CACHE_PATH=/repo/task001/cache
-export ASCEND_WORK_PATH=/repo/task001/172.16.1.12_01_03
-```
+（可选）通过环境变量ASCEND_CACHE_PATH、ASCEND_WORK_PATH设置AscendCL应用编译运行过程中产生的文件的落盘路径，涉及ATC模型转换、AscendCL应用编译配置、AOE模型智能调优、性能数据采集、日志采集等功能，落盘文件包括算子编译缓存文件、知识库文件、调优结果文件、性能数据文件、日志文件等。具体工具用法和案例参考[算子场景开发工具旅程图](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/81RC1alpha001/devaids/quickstart/devjrnmap/toolsindex_001.html)。
 
 ## Ascend C demos
 
-动态图使用的aclnn算子清单可以查询官网，比如[aclnn矩阵乘法算子](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/80RC3alpha003/apiref/aolapi/context/aclnnMatmul.md)等。
+一般不需要从零开始开发，checkout到对应branch的samples官方样例即可。
+下面以香橙派中安装CANN`8.0.RC3.alpha002 `为例
+```bash
+# ls /usr/local/Ascend/ascend-toolkit/
+8.0  8.0.0  8.0.RC3.alpha002  latest  set_env.sh
+```
+
+动态图使用的aclnn算子清单可以查询官网，比如CANN`8.0.RC3.alpha002 `的[aclnn矩阵乘法算子](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/10_matmul_frameworklaunch/AclNNInvocation)等。一般样例报错的话是因为Soc_version不支持，需要查询对应文档或者在仓库提需求issues。
 
 为了讲解如何开发Ascend CL的算子，建议先了解一下面几个案例：
+- 0.helloAscendC: [helloworld初识开发流程](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/0_helloworld);
+- 1.1.vectorParadigm_kernel_invocation: 以[AddCutsom](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/3_add_kernellaunch/AddKernelInvocationNeo)为例，展示cpp算子<<<直调>>>的用法。核函数直调方法下，开发者完成kernel侧算子实现和host侧tiling实现后，即可通过AscendCL运行时接口，完成算子kernel直调， 该方式下tiling开发不受CANN框架的限制，简单直接，多用于算子功能的快速验证;
+- 1.2.vectorParadigm_framework: 以[AddCustom](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/1_add_frameworklaunch/AddCustom)为例。工程调用就是打包出*.run，然后安装部署，接着被其他框架调用;
+- 2.cubeParadigm： 以matmul为例，包含[基于MatmulCustom算子工程调用](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/10_matmul_frameworklaunch) 或[算子直调](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/11_matmul_kernellaunch)。
+- 3.mixVectorCubeParadigm: 以融合算子[matmulleakyrelu_frameworklaunch](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/12_matmulleakyrelu_frameworklaunch)为例，融合算子就是矩阵计算的同时进行向量计算，总用时是$max(Time_{\ 矩阵计算模块AIC},Time_{\ 向量计算模块AIV})$。
 
-- [helloworld初识开发流程](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/0_helloworld)，
-- [Matmul算子的核函数直调方法](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/11_matmul_kernellaunch)
-- [基于MatmulCustom算子工程，介绍了单算子工程、单算子调用](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/10_matmul_frameworklaunch)
-- 开发者完成kernel侧算子实现和host侧tiling实现后，即可通过AscendCL运行时接口，完成[算子kernel直调](https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0056.html)。该方式下tiling开发不受CANN框架的限制，简单直接，多用于算子功能的快速验证。
-- 对于KernelLaunch开放式算子编程的方式，通过[第三方框架Pybind11调用AscendC算子](https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0057.html)，可以实现Python调用算子kernel程序。
+对于frameworkLaunch开放式算子编程的方式，通过上级目录`ascend_c_ops_pybind11`和官方[PyTorch第三方框架Pybind11调用AscendC算子](https://www.hiascend.com/document/detail/zh/canncommercial/800/developmentguide/opdevg/Ascendcopdevg/atlas_ascendc_10_0057.html)或[MindSporee框架Custom原语AOT类型自定义Ascend平台算子](https://www.mindspore.cn/tutorials/zh-CN/r2.6.0/custom_program/operation/op_custom_ascendc.html)，实现Python调用算子kernel程序。
 
-**注意**：生产环境可以考虑断点保存MindSpore的算子输入数据 `numpy_input_data = mindsporeTensor.asnumpy()`，根据[numpy输入数据导出bin文件用于AscendC算子开发的案例](https://gitee.com/ascend/samples/blob/master/cplusplus/level1_single_api/4_op_dev/6_ascendc_custom_op/kernel_invocation/MatMul/matmul_custom.py)的做法导出Python中的输入数据 `input_data.bin`，然后导入到Ascend C中做算子开发。类比CPU上传统的，GPU上编程模型SIMT对应SPMD执行模型可以用来实现各种高性能并行计算，AscendC语言提供“释放NPU算力去承接诸如图片渲染等大规模并行计算任务”的一种方案，比如[DVPP](https://bbs.huaweicloud.com/blogs/394593?utm_source=zhihu&utm_medium=bbs-ex&utm_campaign=other&utm_content=content))。如果未来Ascend C对接上Triton DSL，就可能只需要写一份python代码自定义算子，然后GPU/NPU上分别编译为CUDA/或scendC，甚至跳过这两个接口语言，直接编译到PTX之类的二进制bin直接执行。
-
-- `kernel_invocation`目录是[Ascend C保姆级教程](https://www.hiascend.com/forum/thread-0239124507219723020-1-1.html)，从一个简单的add实例出发，带你体验Ascend C算子开发的基本流程。相对路径引用了 `kernel_template`目录下一些公共函数和公共文件，`ll`命令可以参考 https://gitee.com/ascend/samples/tree/v0.2-8.0.0.beta1/cplusplus/level1_single_api/4_op_dev/6_ascendc_custom_op/kernel_invocation 多个开发案例启动命令的方法。因为AscendC主力支持的SOC_VERSION列表是 [Ascend310P1 Ascend310P3 Ascend910B1 Ascend910B2 Ascend910B3 Ascend910B4]，如果没有对应设备就要考虑 `cpu`模式模拟执行。
-- `ascend_c_ops`目录[基于AscendC的add算子](https://gitee.com/ascend/samples/tree/v0.2-8.0.0.beta1/operator/ascendc/0_introduction/3_add_kernellaunch/CppExtensions#/ascend/samples/blob/v0.2-8.0.0.beta1/operator/ascendc/0_introduction/3_add_kernellaunch/CppExtensions/./add_custom.cpp)，介绍如何对标CUDA为NPU自定义算子，并通过Pybind11暴露给Python侧调用，提供一个最小可用开发原型。
-- `ms_ops_custom_ascendc`目录[MindSpore官网自定义AscendC的NPU算子](https://www.mindspore.cn/docs/zh-CN/r2.5.0/model_train/custom_program/operation/op_custom_ascendc.html)考虑框架本身和多后端兼容。
-
----
+**PS:**：生产环境可以考虑断点保存MindSpore的算子输入数据 `mindsporeTensor.asnumpy().tofile()`，即参考[numpy输入数据导出bin文件用于AscendC算子开发的案例](https://gitee.com/ascend/samples/blob/master/cplusplus/level1_single_api/4_op_dev/6_ascendc_custom_op/kernel_invocation/MatMul/matmul_custom.py)的做法, 导出Python中的输入数据 `input_data.bin`，然后导入到Ascend C中做算子开发。类比CPU上传统的，GPU上编程模型SIMT对应SPMD执行模型可以用来实现各种高性能并行计算，AscendC语言提供“释放NPU算力去承接诸如图片渲染等大规模并行计算任务”的一种方案，比如[DVPP算子](https://bbs.huaweicloud.com/blogs/394593?utm_source=zhihu&utm_medium=bbs-ex&utm_campaign=other&utm_content=content))。如果未来Ascend NPU IR对接上Triton DSL，就可能只需要写一份python代码自定义算子，然后GPU/NPU上分别编译为CUDA/或scendC，甚至跳过这两个接口语言，直接编译到PTX之类的二进制bin直接执行。
 
 * Ascend NPU的ISA可以用cpu孪生，CPU多线程模拟执行算子的代码跨平台执行效果最robust。CANN版本和soc_version不同很可能导致代码无法上板执行，以hiascend算子页面具体支持的产品型号为准。Ascend C自定义算子对于比较新的硬件支持情况最好，比较老的硬件则需要考虑[TIK](https://www.bilibili.com/video/BV1ha4y1V7vK)、[AICPU](https://www.bilibili.com/video/BV1qg41167db/)和[TBE DSL自定义算子](https://www.bilibili.com/video/BV17v4y1D7K5/)。
+
+* 更多理论介绍参考《Ascend C异构并行程序设计：昇腾算子编程指南》，更多代码实践参考Ascend仓库samples代码。
+
