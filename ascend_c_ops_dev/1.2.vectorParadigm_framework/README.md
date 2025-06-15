@@ -4,8 +4,8 @@ bash ./build.sh
 ```
 
 ```bash
-export ASCEND_CUSTOM_OPP_PATH=$pwd/myinstallpath/vendors/aclnnAddCustom:${ASCEND_CUSTOM_OPP_PATH}
-export LD_LIBRARY_PATH=$pwd/myinstallpath/vendors/aclnnAddCustom/op_api/lib/:${LD_LIBRARY_PATH}
+export ASCEND_CUSTOM_OPP_PATH=/root/HeterogeneousComputingOpsDevTemplate/ascend_c_ops_dev/1.2.vectorParadigm_framework/AddCustom/myinstallpath/packages/vendors/customize:${ASCEND_CUSTOM_OPP_PATH}
+export LD_LIBRARY_PATH=/root/HeterogeneousComputingOpsDevTemplate/ascend_c_ops_dev/1.2.vectorParadigm_framework/AddCustom/myinstallpath/packages/vendors/customize/op_api/lib/:${LD_LIBRARY_PATH}
 ###/usr/local/Ascend/ascend-toolkit/latest/opp/vendors/customize/op_api/lib/  
 ```
 

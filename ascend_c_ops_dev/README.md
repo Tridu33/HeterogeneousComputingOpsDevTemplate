@@ -50,9 +50,9 @@ Ascend CL（TIK2 C++）算子可用CPU模式或NPU模式执行
 8.0  8.0.0  8.0.RC3.alpha002  latest  set_env.sh
 ```
 
-动态图使用的aclnn算子清单可以查询官网，比如CANN`8.0.RC3.alpha002 `的[aclnn矩阵乘法算子](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/10_matmul_frameworklaunch/AclNNInvocation)等。一般样例报错的话是因为Soc_version不支持，需要查询对应文档或者在仓库提需求issues。
+动态图使用的aclnn算子清单可以查询官网，比如CANN`8.0.RC3.alpha002`的[aclnn矩阵乘法算子](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/10_matmul_frameworklaunch/AclNNInvocation)等。一般样例报错的话是因为Soc_version不支持，需要查询对应文档或者在仓库提需求issues，某些新版本的样例有可能适用于旧版本CANN。
 
-为了讲解如何开发Ascend CL的算子，建议先了解一下面几个案例：
+为了讲解如何开发Ascend CL的算子，建议先了解一下面几个案例(来自[**https://gitee.com/ascend/samples/tree/master/operator/ascendc/tutorials**](https://gitee.com/ascend/samples/tree/master/operator/ascendc/tutorials))：
 - 0.helloAscendC: [helloworld初识开发流程](https://gitee.com/ascend/samples/tree/master/operator/ascendc/0_introduction/0_helloworld);
 - 1.1.vectorParadigm_kernel_invocation: 以[AddCutsom](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/3_add_kernellaunch/AddKernelInvocationNeo)为例，展示cpp算子<<<直调>>>的用法。核函数直调方法下，开发者完成kernel侧算子实现和host侧tiling实现后，即可通过AscendCL运行时接口，完成算子kernel直调， 该方式下tiling开发不受CANN框架的限制，简单直接，多用于算子功能的快速验证;
 - 1.2.vectorParadigm_framework: 以[AddCustom](https://gitee.com/ascend/samples/tree/v0.1-8.0.0.alpha002/operator/ascendc/0_introduction/1_add_frameworklaunch/AddCustom)为例。工程调用就是打包出*.run，然后安装部署，接着被其他框架调用;
