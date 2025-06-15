@@ -16,3 +16,5 @@ python setup.py bdist_wheel
 # 创建whl文件
 
 ```
+
+GEMM通用矩阵相乘是比较常见的的算子，这里有讲解[如何使用x86的SSE/AVX指令给gemm加速](https://lzzmm.github.io/2021/09/10/GEMM/), 其他平台的SIMD指令集还有： arm64的NEON指令和risc-v的RV指令。
